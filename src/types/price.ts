@@ -6,6 +6,8 @@ export interface Price {
   type: string;
   unit: string;
   change_percent: number;
+  calories?: number;
+  weight?: number;
 }
 
 export interface PriceResponse {
