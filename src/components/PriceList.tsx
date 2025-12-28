@@ -27,34 +27,35 @@ export const PriceList: React.FC = () => {
     });
   }, [data, filter]);
 
-  if (isLoading) return <div className="p-8 text-white text-center font-bold">Connecting...</div>;
-  if (isError) return <div className="p-8 text-rose-500 text-center font-bold font-mono">Connection Error</div>;
+  if (isLoading) return <div className="p-8 text-white text-center font-black animate-pulse">LOADING_DATA...</div>;
+  if (isError) return <div className="p-8 text-rose-400 text-center font-black">CONNECTION_LOST</div>;
 
   return (
-    <div className="p-4 bg-slate-950 min-h-screen text-slate-200">
-      <header className="max-w-full mx-auto mb-5 flex justify-between items-end px-4">
+    <div className="p-4 bg-[#020617] min-h-screen text-white font-sans">
+      <header className="max-w-full mx-auto mb-10 flex justify-between items-center px-4">
         <div className="flex flex-col">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-black text-white tracking-tighter italic">MARKET.IO</h1>
-            <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-rose-600 shadow-[0_0_10px_#e11d48]'}`} />
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl font-black text-white italic tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]">
+              MARKET.IO
+            </h1>
+            <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-emerald-400 shadow-[0_0_12px_#10b981]' : 'bg-rose-500 shadow-[0_0_12px_#f43f5e]'}`} />
           </div>
-          <p className="text-[9px] text-slate-600 font-bold tracking-[0.3em] uppercase">Dynamic Live Feed</p>
+          <span className="text-[9px] text-blue-400 font-black tracking-[0.5em] uppercase mt-1 drop-shadow-[0_0_5px_rgba(96,165,250,0.5)]">High_Frequency_Stream</span>
         </div>
 
-        <div className="flex gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+        <div className="flex gap-2 bg-slate-900/40 p-1 rounded-xl border border-slate-700 backdrop-blur-md">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${filter === 'all' ? 'bg-blue-600 text-white' : 'text-slate-500 hover:text-slate-300'}`}
-          >ALL</button>
+            className={`px-6 py-2 rounded-lg text-[10px] font-black transition-all duration-300 ${filter === 'all' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.8)]' : 'text-slate-400 hover:text-white'}`}
+          >GLOBAL</button>
           <button
             onClick={() => setFilter('fitness')}
-            className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${filter === 'fitness' ? 'bg-emerald-600 text-white' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`px-6 py-2 rounded-lg text-[10px] font-black transition-all duration-300 ${filter === 'fitness' ? 'bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.8)]' : 'text-slate-400 hover:text-white'}`}
           >FITNESS</button>
         </div>
       </header>
 
-      {/* Auto-fill Grid: Maximizing screen usage */}
-      <div className="grid gap-3 px-2" style={{
+      <div className="grid gap-4 px-2" style={{
         gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))'
       }}>
         {sortedPrices.map((price: Price) => {
@@ -66,41 +67,51 @@ export const PriceList: React.FC = () => {
           return (
             <div
               key={price.symbol}
-              className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-between h-[140px] ${isGold
-                ? 'bg-slate-900 border-yellow-500/30 shadow-md ring-1 ring-yellow-500/10'
-                : 'bg-slate-900/40 border-slate-800/60 hover:border-slate-500/40'
+              className={`p-5 rounded-2xl border-2 transition-all duration-300 flex flex-col justify-between h-[155px] group ${isGold
+                ? 'bg-slate-900/60 border-yellow-500/40'
+                : 'bg-slate-900/30 border-slate-800 hover:border-blue-500/50 hover:bg-slate-900/50'
                 }`}
             >
               <div className="flex justify-between items-start">
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs w-7 h-7 flex items-center justify-center rounded-lg font-black ${isGold ? 'bg-yellow-500/20 text-yellow-500' : 'bg-slate-800 text-slate-500'}`}>
+                <div className="flex items-center gap-3">
+                  {/* آیکون کوچکتر (w-6) و بدون نئون */}
+                  <span className={`text-[9px] w-6 h-6 flex items-center justify-center rounded-full font-black ${isGold ? 'bg-yellow-500 text-slate-950' : 'bg-white text-slate-950'}`}>
                     {getIcon(price.symbol)}
                   </span>
-                  <span className={`font-black text-[13px] tracking-tight ${isGold ? 'text-yellow-400' : 'text-slate-300'}`}>
+                  <span className={`font-black text-sm tracking-tight ${isGold ? 'text-yellow-400' : 'text-white'}`}>
                     {price.symbol}
                   </span>
                 </div>
-                <div className={`text-[10px] font-black ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                <div className={`px-2 py-1 rounded-lg text-[10px] font-black shadow-[0_0_10px_rgba(0,0,0,0.5)] ${isPositive ? 'bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.4)]'}`}>
                   {isPositive ? '▲' : '▼'} {displayChange}%
                 </div>
               </div>
 
-              {/* Price and Unit in the same line */}
-              <div className="my-1">
-                <div className="text-xl font-black text-white tracking-tight font-mono leading-none">
-                  {price.price?.toLocaleString()}
-                  <span className="text-[10px] text-slate-500 font-bold ml-2 uppercase tracking-tighter">
+              <div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white leading-none tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">
+                    {price.price?.toLocaleString()}
+                  </span>
+                  <span className="text-[11px] font-black text-white uppercase italic drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
                     {price.unit}
                   </span>
                 </div>
                 {price.calories && (
-                  <div className="text-[9px] text-emerald-500 font-black mt-2">🔥 {price.calories} KCAL</div>
+                  <div className="text-[10px] text-emerald-300 font-black mt-2 flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(110,231,183,0.5)]">
+                    <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                    {price.calories} KCAL
+                  </div>
                 )}
               </div>
 
-              <div className="pt-2 border-t border-slate-800/50 flex justify-between items-center text-[9px] text-slate-600 font-black uppercase tracking-tighter">
-                <span className="opacity-50">{price.type}</span>
-                <span className="tabular-nums italic">{price.time}</span>
+              <div className="pt-3 border-t border-slate-700 flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
+                <span className="text-white bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                  {price.type}
+                </span>
+                {/* زمان: بزرگتر (text-[12px])، بدون ایتالیک و نئونی درخشان */}
+                <span className="text-emerald-400 text-[12px] tabular-nums font-black drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]">
+                  {price.time}
+                </span>
               </div>
             </div>
           );
